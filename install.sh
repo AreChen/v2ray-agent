@@ -1132,24 +1132,8 @@ installTools() {
     if echo "${selectCustomInstallType}" | grep -qwE ",7,|,8,|,7,8,"; then
         echoContent green " ---> 检测到无需依赖Nginx的服务，跳过安装"
     else
-        if ! find /usr/bin /usr/sbin | grep -q -w nginx; then
-            echoContent green " ---> 安装nginx"
-            installNginxTools
-        else
-            nginxVersion=$(nginx -v 2>&1)
-            nginxVersion=$(echo "${nginxVersion}" | awk -F "[n][g][i][n][x][/]" '{print $2}' | awk -F "[.]" '{print $2}')
-            if [[ ${nginxVersion} -lt 14 ]]; then
-                read -r -p "读取到当前的Nginx版本不支持gRPC，会导致安装失败，是否卸载Nginx后重新安装 ？[y/n]:" unInstallNginxStatus
-                if [[ "${unInstallNginxStatus}" == "y" ]]; then
-                    ${removeType} nginx >/dev/null 2>&1
-                    echoContent yellow " ---> nginx卸载完成"
-                    echoContent green " ---> 安装nginx"
-                    installNginxTools >/dev/null 2>&1
-                else
-                    exit 0
-                fi
-            fi
-        fi
+        echoContent green " ---> 继续进行其他安装步骤"
+        # 在此处添加其他安装工具或步骤的代码
     fi
 
     if ! find /usr/bin /usr/sbin | grep -q -w semanage; then
